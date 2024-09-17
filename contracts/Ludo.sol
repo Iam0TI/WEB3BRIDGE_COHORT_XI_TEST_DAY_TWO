@@ -12,7 +12,7 @@ contract Ludo {
     }
 
     uint256 public rollcount = 0;
-
+    address owner;
     // can only win if there accumulate postion is 49
     uint256 private constant WINNINGNUMBER = 49;
     Player[4] public players;
@@ -24,6 +24,7 @@ contract Ludo {
 
     constructor() {
         currentPlayer = 0;
+        owner = msg.sender;
     }
 
     // this will rool the  dice 2 times and move the player forward
@@ -79,6 +80,13 @@ contract Ludo {
             if (players[i].hasWon = true) {
                 return true;
             }
+        }
+    }
+    function adminRest() external {
+        require(msg.sender == owner);
+        for (uint256 i = 0; i < 4; i++) {
+            players[i].hasWon = false;
+            players[i].position = 0;
         }
     }
 }
