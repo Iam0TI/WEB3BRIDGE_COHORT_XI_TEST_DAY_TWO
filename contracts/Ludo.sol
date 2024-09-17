@@ -4,6 +4,7 @@ pragma solidity 0.8.27;
 contract Ludo {
     error Invalidplayer();
     error PlayerhasAlreadyWon();
+    error AplayerWonAldreay();
     struct Player {
         uint256 position;
         bool hasWon;
@@ -27,6 +28,7 @@ contract Ludo {
 
     // this will rool the  dice 2 times and move the player forward
     function play() external {
+        require(!checkIfPlayerHasWon(), AplayerWonAldreay());
         uint256 roll = rollDice();
         roll = roll + rollDice();
         movePlayer(roll);
@@ -70,5 +72,13 @@ contract Ludo {
 
         // this is perform  a mod addition so that current will not be greater than 3
         currentPlayer = (currentPlayer + 1) % 4;
+    }
+
+    function checkIfPlayerHasWon() private returns (bool) {
+        for (uint256 i = 0; i < 4; i++) {
+            if (players[i].hasWon = true) {
+                return true;
+            }
+        }
     }
 }
